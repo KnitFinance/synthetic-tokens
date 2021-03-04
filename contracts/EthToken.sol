@@ -1,21 +1,17 @@
+// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.6.0;
 
-import "../GSN/Context.sol";
-import "../token/ERC20/ERC20.sol";
-import "../token/ERC20/ERC20Detailed.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
 
-/**
- * @title SimpleToken
- * @dev Very simple ERC20 Token example, where all tokens are pre-assigned to the creator.
- * Note they can later distribute these tokens as they wish using `transfer` and other
- * `ERC20` functions.
- */
-contract EthToken is Context, ERC20, ERC20Detailed {
 
-    /**
-     * @dev Constructor that gives _msgSender() all of existing tokens.
-     */
-    constructor () public ERC20Detailed("E Token", "ETN", 18) {
-        _mint(_msgSender(), 10000 * (10 ** uint256(decimals())));
-    }
+contract EthToken is ERC20, ERC20Burnable, Ownable {
+  constructor() public ERC20("E Token", "ETN") {}
+
+  function mint(address to, uint256 amount) public onlyOwner {
+    _mint(to, amount);
+  }
 }
